@@ -19,19 +19,24 @@ elgg_register_event_handler('init', 'system', function() {
 	elgg_extend_view('register/extend', 'forms/registration_code', 999);
 
 	/* Avoid 'registration_code' duplicity */
-	elgg_register_plugin_hook_handler('register', 'user', function(){
+	elgg_register_event_hook_handler('create', 'user', function($event, $object_type, $object){
 		$regcode = get_input('registration_code');
-		$valid_code = elgg_get_entities_from_metadata(array(
+		$code_used = elgg_get_entities_from_metadata(array(
 			'type' => 'user',
 			'count' => true,
 			'metadata_name' => 'registration_code',
 			'metadata_value' => $regcode,
 		));
 
-		if (!$valid_code) throw new RegistrationException(elgg_echo('RegistrationException:pesedia:registration_code:already_used'));
+		if ($code_used) {
+			register_error(elgg_echo('RegistrationException:pesedia:registration_code:already_used'));
+			return false;
+		}
+
+		$object->registration_code = $regcode;
 	});
 
-	/* Validate 'registration_code' value */ 
+	/* Validate 'registration_code' value */
 	//elgg_register_plugin_hook_handler('action', 'register', 'registrationcode_register_hook');
 });
 
