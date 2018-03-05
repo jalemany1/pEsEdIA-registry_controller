@@ -17,9 +17,10 @@ elgg_register_event_handler('init', 'system', function() {
 
 	/* Extend register view to include registration code */
 	elgg_extend_view('register/extend', 'forms/registration_code', 999);
+	elgg_extend_view('register/extend', 'simple/sname', 999);
 
 	/* Extension of user registration */
-	elgg_register_event_hook_handler('create', 'user', function($event, $object_type, $object){
+	elgg_register_event_handler('create', 'user', function($event, $object_type, $object){
 		/* Avoid 'registration_code' duplicity */
 		$regcode = get_input('registration_code');
 		$code_used = elgg_get_entities_from_metadata(array(
@@ -37,11 +38,11 @@ elgg_register_event_handler('init', 'system', function() {
 		$object->registration_code = $regcode;
 
 		/* Duplicate data of duplicated fields */
-		$object->email2 = $object->email;
-		$object->age2 = $object->age;
-		$object->gender2 = $object->gender;
-		$object->userclass2 = $object->userclass;
-		$object->usergroup2 = $object->usergroup;
+		$object->email2 = get_input('email');
+		$object->age2 = get_input('custom_profile_fields_age');
+		$object->gender2 = get_input('custom_profile_fields_gender');
+		$object->userclass2 = get_input('custom_profile_fields_userclass');
+		$object->usergroup2 = get_input('custom_profile_fields_usergroup');
 	});
 
 	/* Validate 'registration_code' value */
