@@ -15,9 +15,16 @@ elgg_register_event_handler('init', 'system', function() {
 	elgg_register_action('register', __DIR__ . '/actions/register.php', 'public');
 	elgg_register_plugin_hook_handler('action', 'register', function(){ set_input('multi_emails', true); });
 
+	/* Personalization of ColdTrick/ProfileManager to print view properly */
+	elgg_unextend_view('register/extend', 'profile_manager/register/fields');
+	elgg_extend_view('register/extend', 'simple/register/fields');
+
 	/* Extend register view to include registration code */
-	elgg_extend_view('register/extend', 'forms/registration_code', 999);
+	elgg_extend_view('register/extend', 'simple/register/registration_code', 999);
 	elgg_extend_view('register/extend', 'simple/sname', 999);
+
+	/* Delete EMAIL view from UserSettings to avoid users modification */
+	elgg_unextend_view('forms/account/settings', 'core/settings/account/email');
 
 	/* Extension of user registration */
 	elgg_register_event_handler('create', 'user', function($event, $object_type, $object){

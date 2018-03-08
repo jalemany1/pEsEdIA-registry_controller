@@ -6,6 +6,7 @@
  */
 
 $regcode_field = array(
+	'#class' => 'mtm',
 	'#type' => 'text',
 	'#label' => elgg_echo('pesedia:registry_controller:registration_code'),
 	'#help' => elgg_echo('pesedia:registry_controller:registration_code:help'),
