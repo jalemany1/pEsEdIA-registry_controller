@@ -34,9 +34,9 @@ $fields = [
 	],
 	[
 		'#type' => 'text',
-		'#label' => elgg_echo('name'),
+		'#label' => elgg_echo('username'),
 		'#class' => 'mtm',
-		'#help' => $show_hints ? elgg_echo('profile_manager:register:hints:name') : null,
+		'#help' => $show_hints ? elgg_echo('profile_manager:register:hints:username') : null,
 		'name' => 'name',
 		'value' => $name,
 		'autofocus' => true,
@@ -53,6 +53,7 @@ $fields = [
 ];
 if (!$generate_username_from_email) {
 	$fields[] = [
+		'#class' => 'hidden',
 		'#type' => 'text',
 		'#label' => elgg_echo('username'),
 		'#help' => $show_hints ? elgg_echo('profile_manager:register:hints:username') : null,
